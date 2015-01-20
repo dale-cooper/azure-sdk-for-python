@@ -70,7 +70,8 @@ class BlobService(_StorageClient):
     '''
 
     def __init__(self, account_name=None, account_key=None, protocol='https',
-                 host_base=BLOB_SERVICE_HOST_BASE, dev_host=DEV_BLOB_HOST):
+            host_base=BLOB_SERVICE_HOST_BASE, dev_host=DEV_BLOB_HOST,
+            blob_max_data_size=None, blob_max_chunk_data_size=None):
         '''
         account_name: your storage account name, required for all operations.
         account_key: your storage account key, required for all operations.
@@ -80,8 +81,16 @@ class BlobService(_StorageClient):
             for on-premise.
         dev_host: Optional. Dev host url. Defaults to localhost.
         '''
-        self._BLOB_MAX_DATA_SIZE = 64 * 1024 * 1024
-        self._BLOB_MAX_CHUNK_DATA_SIZE = 4 * 1024 * 1024
+        if blob_max_data_size is None:
+            self._BLOB_MAX_DATA_SIZE = 64 * 1024 * 1024
+        else:
+            self._BLOB_MAX_DATA_SIZE = blob_max_data_size * 1024 * 1024
+
+        if blob_max_chunk_data_size is None:
+            self._BLOB_MAX_CHUNK_DATA_SIZE = 4 * 1024 * 1024
+        else:
+            self._BLOB_MAX_CHUNK_DATA_SIZE = blob_max_chunk_data_size * 1024 * 1024
+
         super(BlobService, self).__init__(
             account_name, account_key, protocol, host_base, dev_host)
 
