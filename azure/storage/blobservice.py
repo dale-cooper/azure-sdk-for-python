@@ -84,11 +84,16 @@ class BlobService(_StorageClient):
         if blob_max_data_size is None:
             self._BLOB_MAX_DATA_SIZE = 64 * 1024 * 1024
         else:
+            if blob_max_data_size <= 0 && blob_max_data_size > 64:
+                blob_max_data_size = 64
+
             self._BLOB_MAX_DATA_SIZE = blob_max_data_size * 1024 * 1024
 
         if blob_max_chunk_data_size is None:
             self._BLOB_MAX_CHUNK_DATA_SIZE = 4 * 1024 * 1024
         else:
+            if blob_max_chunk_data_size <= 0 && blob_max_chunk_data_size > 64:
+                blob_max_chunk_data_size = 4
             self._BLOB_MAX_CHUNK_DATA_SIZE = blob_max_chunk_data_size * 1024 * 1024
 
         super(BlobService, self).__init__(
